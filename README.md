@@ -6,6 +6,26 @@
 - 可调节运行次数
 - 使用 PyDirectInput 库，可以在游戏中正常使用
 
+## Build
+
+windows
+
+```shell
+pyinstaller -F \
+  --hidden-import "pynput.keyboard._win32" \
+  --hidden-import "pynput.mouse._win32" \
+  main.py
+```
+
+linux
+
+```shell
+pyinstaller -F \
+  --hidden-import "pynput.keyboard._xorg" \
+  --hidden-import "pynput.mouse._xorg" \
+  main.py
+```
+
 ## Usage
 
 F6 开始运行 / 停止运行

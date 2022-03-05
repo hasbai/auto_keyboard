@@ -6,9 +6,10 @@ authors = ["嘉然今天吃什么 <jsclndnz@outlook.com>"]
 license = "Apache"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.11"
 PyDirectInput = "^1.0.4"
 pynput = "^1.7.6"
+pyinstaller = "^4.9"
 
 [tool.poetry.dev-dependencies]
 
