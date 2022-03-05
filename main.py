@@ -28,6 +28,19 @@ def time_delay() -> int:
     return int(delay * 1000)
 
 
+def run_script(script: list) -> int:
+    for i in range(config.get('repeat_times', 1)):
+        for command in script:
+            if not running:
+                return -1
+            time.sleep(command[0] / 1000)
+            if command[1] == 'keyboard':
+                keyboard_click(command[2])
+            elif command[1] == 'mouse':
+                mouse_click(*command[2:])
+    return 0
+
+
 def run():
     global running
 
@@ -38,16 +51,10 @@ def run():
         file = config.get('current_script', '') or files[0]
         with open(f'{SCRIPT_DIR}/{file}') as f:
             script = json.load(f)
-        for i in range(config.get('repeat_times', 1)):
-            for command in script:
-                if running:
-                    time.sleep(command[0] / 1000)
-                    if command[1] == 'keyboard':
-                        keyboard_click(command[2])
-                    elif command[1] == 'mouse':
-                        mouse_click(*command[2:])
-        if running:
+        if run_script(script) == 0:
             print('completed running')
+        else:
+            print('stopped running')
     running = False
 
 
@@ -61,6 +68,7 @@ def on_keyboard_press(key):
     if key == keyboard.Key.esc:
         print('exit......')
         keyboard_listener.stop()
+        mouse_listener.stop()
     elif key == keyboard.Key.f6:
         if not running:
             running = True
@@ -68,7 +76,6 @@ def on_keyboard_press(key):
             print('start running')
         else:
             running = False
-            print('end running')
     elif key == keyboard.Key.f7:
         if not recording:
             recording = True
